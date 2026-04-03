@@ -43,6 +43,22 @@ def build_database_uri() -> str:
             f"@{mysql_host}:{mysql_port}/{mysql_database}"
         )
 
+    railway_env = any(
+        os.getenv(name)
+        for name in (
+            "RAILWAY_ENVIRONMENT",
+            "RAILWAY_PROJECT_ID",
+            "RAILWAY_SERVICE_ID",
+            "RAILWAY_PUBLIC_DOMAIN",
+            "RAILWAY_DEPLOYMENT_ID",
+            "PORT",
+        )
+    )
+    if railway_env:
+        raise RuntimeError(
+            "No Railway MySQL connection settings found. Set DATABASE_URL or MYSQLHOST/MYSQLPORT/MYSQLUSER/MYSQLPASSWORD/MYSQLDATABASE."
+        )
+
     return "mysql+pymysql://root:@127.0.0.1:3306/ledger"
 
 
