@@ -22,8 +22,16 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-change-me")
 
 
+def get_first_env(*names: str) -> str | None:
+    for name in names:
+        value = os.getenv(name)
+        if value:
+            return value
+    return None
+
+
 def build_database_uri() -> str:
-    database_url = os.getenv("DATABASE_URL")
+    database_url = get_first_env("DATABASE_URL", "MYSQL_URL", "MYSQL_PUBLIC_URL")
     if database_url:
         if database_url.startswith("mysql://"):
             return database_url.replace("mysql://", "mysql+pymysql://", 1)
@@ -31,11 +39,11 @@ def build_database_uri() -> str:
             return database_url.replace("mysql2://", "mysql+pymysql://", 1)
         return database_url
 
-    mysql_host = os.getenv("MYSQLHOST")
-    mysql_port = os.getenv("MYSQLPORT", "3306")
-    mysql_user = os.getenv("MYSQLUSER")
-    mysql_password = os.getenv("MYSQLPASSWORD")
-    mysql_database = os.getenv("MYSQLDATABASE")
+    mysql_host = get_first_env("MYSQLHOST", "MYSQL_HOST")
+    mysql_port = get_first_env("MYSQLPORT", "MYSQL_PORT") or "3306"
+    mysql_user = get_first_env("MYSQLUSER", "MYSQL_USER")
+    mysql_password = get_first_env("MYSQLPASSWORD", "MYSQL_PASSWORD")
+    mysql_database = get_first_env("MYSQLDATABASE", "MYSQL_DATABASE")
 
     if all([mysql_host, mysql_user, mysql_password, mysql_database]):
         return (
@@ -56,7 +64,7 @@ def build_database_uri() -> str:
     )
     if railway_env:
         raise RuntimeError(
-            "No Railway MySQL connection settings found. Set DATABASE_URL or MYSQLHOST/MYSQLPORT/MYSQLUSER/MYSQLPASSWORD/MYSQLDATABASE."
+            "No Railway MySQL connection settings found. Set DATABASE_URL, MYSQL_URL, or MYSQLHOST/MYSQLPORT/MYSQLUSER/MYSQLPASSWORD/MYSQL_DATABASE."
         )
 
     return "mysql+pymysql://root:@127.0.0.1:3306/ledger"
