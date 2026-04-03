@@ -1,41 +1,65 @@
-# Personal Finance Ledger (Flask)
+# Personal Finance Ledger
 
-A complete Flask web app with authentication, full transaction CRUD, MySQL database integration, and matplotlib reporting.
+A Flask web application for tracking personal income, expenses, and transfers. The project uses Flask-Login for authentication, Flask-SQLAlchemy for persistence, MySQL for storage, and matplotlib for reporting.
 
-## Features
+## What It Does
 
-- User registration and login with hashed passwords
-- Add, edit, and delete income, expense, and transfer transactions
-- SQLAlchemy models and MySQL database integration
-- Financial summary dashboard and report page
-- Pie chart visualization using matplotlib
-- Responsive Bootstrap interface
+- Register and log in users with hashed passwords
+- Create, edit, and delete transactions
+- Track income, expense, and transfer entries
+- Show a summary dashboard and recent activity
+- Generate a chart-based report page
+
+## Technology
+
+- Flask
+- Flask-Login
+- Flask-SQLAlchemy
+- PyMySQL
+- MySQL or Railway-managed MySQL
+- matplotlib
+
+## Project Structure
+
+- `app.py` main Flask application, models, and routes
+- `templates/` HTML templates
+- `static/` CSS and other static assets
+- `requirements.txt` Python dependencies
+- `.env.example` sample environment variables
 
 ## Setup
 
 1. Create and activate a virtual environment.
-2. Install dependencies:
+2. Install dependencies.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Set environment variables for Railway MySQL or a local MySQL instance (PowerShell example):
+3. Create a MySQL database named `ledger`.
+
+If you are using XAMPP, start MySQL and run:
+
+```sql
+CREATE DATABASE IF NOT EXISTS ledger CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+4. Set environment variables.
 
 ```powershell
 $env:SECRET_KEY="your-secret-key"
-$env:DATABASE_URL="mysql+pymysql://username:password@host:3306/ledger"
+$env:DATABASE_URL="mysql+pymysql://username:password@localhost:3306/ledger"
 ```
 
-If you are using Railway-managed MySQL, Railway usually provides `MYSQLHOST`, `MYSQLPORT`, `MYSQLUSER`, `MYSQLPASSWORD`, and `MYSQLDATABASE` automatically. The app will use those values if `DATABASE_URL` is not set.
+If you are using Railway-managed MySQL, set `DATABASE_URL` or the Railway-provided `MYSQLHOST`, `MYSQLPORT`, `MYSQLUSER`, `MYSQLPASSWORD`, and `MYSQLDATABASE` variables.
 
-4. Run the app:
+5. Run the app.
 
 ```bash
 python app.py
 ```
 
-5. Open your browser at:
+6. Open the app in your browser.
 
 ```text
 http://127.0.0.1:5000
@@ -43,7 +67,7 @@ http://127.0.0.1:5000
 
 ## Notes
 
-- Database tables are auto-created when the app starts.
-- Replace the default secret key before production deployment.
-- Railway MySQL support uses the `mysql+pymysql://` SQLAlchemy driver.
+- Database tables are created automatically on startup.
+- The project is configured for MySQL only.
+- Update the secret key before deploying to production.
 - Matplotlib chart rendering currently requires Python 3.13 or below.
