@@ -202,6 +202,11 @@ def get_plotter():
         return None
 
 
+@app.route("/health")
+def health():
+    return {"status": "ok"}, 200
+
+
 @app.route("/")
 def index():
     if current_user.is_authenticated:
