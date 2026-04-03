@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 reveal">
+    <h2 class="h3 mb-0 section-title">Financial Report</h2>
+    <a class="btn btn-outline-secondary" href="{{ url_for('transactions') }}">Back to transactions</a>
+</div>
+
+<div class="row g-3 mb-4 reveal">
+    <div class="col-sm-6 col-lg-3"><div class="card stat-card glass-card"><div class="card-body"><div class="stat-head"><h6>Total Income</h6><i class="bi bi-arrow-down-circle text-success"></i></div><p class="h5 text-success count-up" data-prefix="$" data-target="{{ summary.income }}">${{ '%.2f'|format(summary.income) }}</p></div></div></div>
+    <div class="col-sm-6 col-lg-3"><div class="card stat-card glass-card"><div class="card-body"><div class="stat-head"><h6>Total Expense</h6><i class="bi bi-arrow-up-circle text-danger"></i></div><p class="h5 text-danger count-up" data-prefix="$" data-target="{{ summary.expense }}">${{ '%.2f'|format(summary.expense) }}</p></div></div></div>
+    <div class="col-sm-6 col-lg-3"><div class="card stat-card glass-card"><div class="card-body"><div class="stat-head"><h6>Total Transfers</h6><i class="bi bi-arrow-left-right text-primary"></i></div><p class="h5 text-primary count-up" data-prefix="$" data-target="{{ summary.transfers }}">${{ '%.2f'|format(summary.transfers) }}</p></div></div></div>
+    <div class="col-sm-6 col-lg-3"><div class="card stat-card glass-card"><div class="card-body"><div class="stat-head"><h6>Balance</h6><i class="bi bi-wallet2 {% if summary.balance >= 0 %}text-success{% else %}text-danger{% endif %}"></i></div><p class="h5 {% if summary.balance >= 0 %}text-success{% else %}text-danger{% endif %} count-up" data-prefix="$" data-target="{{ summary.balance }}">${{ '%.2f'|format(summary.balance) }}</p></div></div></div>
+</div>
+
+<div class="card shadow-sm glass-card reveal">
+    <div class="card-body p-4 text-center">
+        {% if chart_url %}
+            <h3 class="h5 mb-3">Money Flow Pie Chart</h3>
+            <img class="img-fluid report-chart" src="data:image/png;base64,{{ chart_url }}" alt="Money flow chart">
+        {% elif not matplotlib_available %}
+            <p class="text-muted mb-0">Matplotlib is not available in this Python environment, so chart rendering is disabled.</p>
+        {% else %}
+            <p class="text-muted mb-0">No data available yet. Add transactions to generate a chart.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center reveal">
+    <div class="col-md-7 col-lg-6">
+        <div class="card shadow-sm glass-card form-panel">
+            <div class="card-body p-4">
+                <h2 class="h3 mb-3 section-title">Register</h2>
+                <form method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" name="confirm_password" required>
+                    </div>
+                    <button class="btn btn-primary w-100">Create account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
